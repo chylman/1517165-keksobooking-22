@@ -1,3 +1,5 @@
+import {getRandomIntInclusive, getRandomFloatInclusive, shuffleArray, getRandomElementArray} from './utils.js';
+
 const ADS_COUNT = 10;
 
 const OFFER_TYPE = [
@@ -31,62 +33,22 @@ const OFFER_PHOTOS = [
 const Price = {
   MIN: 100,
   MAX: 10000,
-}
+};
 
 const Location = {
   MIN: 1,
   MAX: 1000,
-}
+};
 
 const Rooms = {
   MIN: 1,
   MAX: 100,
-}
+};
 
 const Guests = {
   MIN: 1,
   MAX: 100,
-}
-
-//Функция, возвращающая случайное целое число из переданного диапазона включительно
-
-const getRandomIntInclusive = (min, max) => {
-  if (min < 0 || max < 0) {
-    return -1;
-  }
-
-  if (max < min) {
-    [min, max] = [max, min];
-  }
-
-  return Math.floor(Math.random() * (max - min + 1) + min);
-}
-
-//Функция, возвращающая случайное число c плавающей точкой из переданного диапазона включительно
-
-const getRandomFloatInclusive = (min, max, numberDigits) => {
-  if (min < 0 || max < 0) {
-    return -1;
-  }
-
-  if (max < min) {
-    [min, max] = [max, min];
-  }
-
-  return (Math.random() * (max - min) + min).toFixed(numberDigits);
-}
-
-const shuffleArray = (a) => {
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
-
-const getRandomElementArray = (arr) => {
-  return arr[getRandomIntInclusive(0, arr.length - 1)]
-}
+};
 
 const createNearbyAd = () => {
   return {
