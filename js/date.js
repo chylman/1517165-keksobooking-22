@@ -69,7 +69,7 @@ const createNearbyAd = () => {
       checkout: getRandomElementArray(OFFER_CHECKTIME),
       features: shuffleArray(OFFER_FEATURES).slice(0, getRandomIntInclusive(1, OFFER_FEATURES.length - 1)),
       description: 'О локации: ',
-      photos: getRandomElementArray(OFFER_PHOTOS),
+      photos: shuffleArray(OFFER_PHOTOS).slice(0, getRandomIntInclusive(1, OFFER_PHOTOS.length)),
     },
 
     location: {
