@@ -9,6 +9,13 @@ const OFFER_TYPE = [
   'bungalow',
 ];
 
+const OFFER_TYPE_RU = {
+  palace: 'Комната',
+  flat: 'Квартира',
+  house: 'Дом',
+  bungalow: 'Дворец',
+}
+
 const OFFER_CHECKTIME = [
   '12:00',
   '13:00',
@@ -81,4 +88,4 @@ const createNearbyAd = () => {
 
 const nearbyAds = new Array(ADS_COUNT).fill(null).map(() => createNearbyAd());
 
-export{ nearbyAds };
+export{ nearbyAds, OFFER_TYPE_RU };
