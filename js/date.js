@@ -9,6 +9,13 @@ const OFFER_TYPE = [
   'bungalow',
 ];
 
+const OFFER_TYPE_RU = {
+  palace: 'Комната',
+  flat: 'Квартира',
+  house: 'Дом',
+  bungalow: 'Дворец',
+}
+
 const OFFER_CHECKTIME = [
   '12:00',
   '13:00',
@@ -69,7 +76,7 @@ const createNearbyAd = () => {
       checkout: getRandomElementArray(OFFER_CHECKTIME),
       features: shuffleArray(OFFER_FEATURES).slice(0, getRandomIntInclusive(1, OFFER_FEATURES.length - 1)),
       description: 'О локации: ',
-      photos: getRandomElementArray(OFFER_PHOTOS),
+      photos: shuffleArray(OFFER_PHOTOS).slice(0, getRandomIntInclusive(1, OFFER_PHOTOS.length)),
     },
 
     location: {
@@ -81,4 +88,4 @@ const createNearbyAd = () => {
 
 const nearbyAds = new Array(ADS_COUNT).fill(null).map(() => createNearbyAd());
 
-export{ nearbyAds };
+export{ nearbyAds, OFFER_TYPE_RU };
