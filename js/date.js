@@ -2,18 +2,19 @@ import {getRandomIntInclusive, getRandomFloatInclusive, shuffleArray, getRandomE
 
 const ADS_COUNT = 10;
 
-const OFFER_TYPE = [
-  'palace',
-  'flat',
-  'house',
-  'bungalow',
-];
-
-const OFFER_TYPE_RU = {
-  palace: 'Комната',
-  flat: 'Квартира',
-  house: 'Дом',
-  bungalow: 'Дворец',
+const OFFER_TYPE = {
+  ru: {
+    palace: 'Дворец',
+    flat: 'Квартира',
+    house: 'Дом',
+    bungalow: 'Бунгало',
+  },
+  minPrice: {
+    palace: 10000,
+    flat: 1000,
+    house: 5000,
+    bungalow: 0,
+  },
 }
 
 const OFFER_CHECKTIME = [
@@ -69,7 +70,7 @@ const createNearbyAd = () => {
         location: getRandomIntInclusive(Location.MIN,Location.MAX) + ', ' + getRandomIntInclusive(Location.MIN,Location.MAX),
       },
       price: getRandomIntInclusive(Price.MIN, Price.MAX),
-      type: getRandomElementArray(OFFER_TYPE),
+      type: getRandomElementArray(Object.keys(OFFER_TYPE.ru)),
       rooms: getRandomIntInclusive(Rooms.MIN, Rooms.MAX),
       guests: getRandomIntInclusive(Guests.MIN, Guests.MAX),
       checkin: getRandomElementArray(OFFER_CHECKTIME),
@@ -88,4 +89,4 @@ const createNearbyAd = () => {
 
 const nearbyAds = new Array(ADS_COUNT).fill(null).map(() => createNearbyAd());
 
-export{ nearbyAds, OFFER_TYPE_RU };
+export{ nearbyAds, OFFER_TYPE };

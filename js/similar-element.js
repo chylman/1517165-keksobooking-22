@@ -1,4 +1,4 @@
-import { nearbyAds, OFFER_TYPE_RU } from './date.js';
+import { nearbyAds, OFFER_TYPE } from './date.js';
 
 const similarAdTemplate = document.querySelector('#card').content.querySelector('.popup');
 const similarListFragment = document.createDocumentFragment();
@@ -11,7 +11,7 @@ const createSimilarAd = (ad) => {
   similarAd.querySelector('.popup__title').textContent = title;
   similarAd.querySelector('.popup__text--address').textContent = adress.location;
   similarAd.querySelector('.popup__text--price').textContent = price + ' ₽/ночь';
-  similarAd.querySelector('.popup__type').textContent = OFFER_TYPE_RU[type];
+  similarAd.querySelector('.popup__type').textContent = OFFER_TYPE.ru[type];
   similarAd.querySelector('.popup__text--capacity').textContent = rooms + ' комнаты для ' + guests + ' гостей ';
   similarAd.querySelector('.popup__text--time').textContent = 'Заезд после ' + checkin + ', выезд до ' + checkout;
   similarAd.querySelector('.popup__features').textContent = features.join(', ');
