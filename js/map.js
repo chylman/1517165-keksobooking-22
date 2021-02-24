@@ -15,13 +15,13 @@ const switchingDisabledForms = () => {
   const formAdChilds = formAd.childNodes;
 
   for (let i = 0; i < formAd.childNodes.length; i++) {
-    (formAdChilds[i].disabled) ? formAdChilds[i].disabled = false :  formAdChilds[i].disabled = true;
+    formAdChilds[i].disabled = !formAdChilds[i].disabled;
   }
 
   const formMapFiltersChilds = formMapFilters.childNodes;
 
   for (let i = 0; i < formMapFiltersChilds.length; i++) {
-    (formMapFilters[i].disabled) ? formMapFiltersChilds[i].disabled = false : formMapFiltersChilds[i].disabled = true;
+    formMapFilters[i].disabled = !formMapFilters[i].disabled;
   }
 }
 
