@@ -2,7 +2,7 @@ import { nearbyAds, OFFER_TYPE } from './date.js';
 
 const similarAdTemplate = document.querySelector('#card').content.querySelector('.popup');
 const similarListFragment = document.createDocumentFragment();
-
+nearbyAds;
 const createSimilarAd = (ad) => {
   const similarAd = similarAdTemplate.cloneNode(true);
   const { title, adress, price, type, rooms, guests, checkin, checkout, features, description, photos } = ad.offer;
@@ -16,23 +16,23 @@ const createSimilarAd = (ad) => {
   similarAd.querySelector('.popup__text--time').textContent = 'Заезд после ' + checkin + ', выезд до ' + checkout;
   similarAd.querySelector('.popup__features').textContent = features.join(', ');
   similarAd.querySelector('.popup__description').textContent = description;
-
   similarAd.querySelector('.popup__photos').removeChild(similarAd.querySelector('.popup__photo'));
-  photos.forEach(photo => {
+
+
+  if (photos) {photos.forEach(photo => {
     const popupPhoto = document.createElement('img');
     popupPhoto.classList.add('.popup__photo');
     popupPhoto.src = photo;
     popupPhoto.width = 45;
     popupPhoto.height = 40;
     similarAd.querySelector('.popup__photos').append(popupPhoto);
-  });
+  });} else {
+    similarAd.querySelector('.popup__photos').classList.add('hidden');
+  }
 
-  similarAd.querySelector('.popup__avatar.popup__avatar').src = avatar;
+  (avatar) ? similarAd.querySelector('.popup__avatar.popup__avatar').src = avatar : similarAd.querySelector('.popup__avatar.popup__avatar').classList.add('hidden');
 
   return similarListFragment.appendChild(similarAd);
 }
 
-const similarListElement = document.querySelector('#map-canvas');
-
-similarListElement.appendChild(createSimilarAd(nearbyAds[0]));
-
+export { createSimilarAd }
