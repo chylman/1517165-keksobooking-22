@@ -1,4 +1,4 @@
-import {getRandomIntInclusive, getRandomFloatInclusive, shuffleArray, getRandomElementArray} from './utils.js';
+import { getRandomIntInclusive, getRandomFloatInclusive, shuffleArray, getRandomElementArray } from './utils.js';
 
 const ADS_COUNT = 10;
 
