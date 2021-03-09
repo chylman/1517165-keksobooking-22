@@ -8,29 +8,82 @@ const createSimilarAd = (ad) => {
   const { title, adress, price, type, rooms, guests, checkin, checkout, features, description, photos } = ad.offer;
   const { avatar } = ad.author;
 
-  (title) ? similarAd.querySelector('.popup__title').textContent = title : similarAd.querySelector('.popup__title').classList.add('hidden');
-  (adress) ? similarAd.querySelector('.popup__text--address').textContent = adress.location : similarAd.querySelector('.popup__text--address').classList.add('hidden');
-  (price) ? similarAd.querySelector('.popup__text--price').textContent = price + ' ₽/ночь' : similarAd.querySelector('.popup__text--price').classList.add('hidden');
-  (OFFER_TYPE.ru[type]) ? similarAd.querySelector('.popup__type').textContent = OFFER_TYPE.ru[type] : similarAd.querySelector('.popup__type').classList.add('hidden');
-  (rooms & guests) ? similarAd.querySelector('.popup__text--capacity').textContent = rooms + ' комнаты для ' + guests + ' гостей ' : similarAd.querySelector('.popup__text--capacity').classList.add('hidden');
-  (checkin & checkout) ? similarAd.querySelector('.popup__text--time').textContent = 'Заезд после ' + checkin + ', выезд до ' + checkout : similarAd.querySelector('.popup__text--time').classList.add('hidden');
-  (features) ? similarAd.querySelector('.popup__features').textContent = features.join(', ') : similarAd.querySelector('.popup__features').classList.add('hidden');
-  (description) ? similarAd.querySelector('.popup__description').textContent = description : similarAd.querySelector('.popup__description').classList.add('hidden');
+  if (title) {
+    similarAd.querySelector('.popup__title').textContent = title;
+  } else {
+    similarAd.querySelector('.popup__title').classList.add('hidden');
+  }
+
+  if (adress) {
+    similarAd.querySelector('.popup__text--address').textContent = adress.location;
+  } else {
+    similarAd.querySelector('.popup__text--address').classList.add('hidden');
+  }
+
+  if (price){
+    similarAd.querySelector('.popup__text--price').textContent = price + ' ₽/ночь';
+  } else {
+    similarAd.querySelector('.popup__text--price').classList.add('hidden');
+  }
+
+  if (OFFER_TYPE.ru[type]) {
+    similarAd.querySelector('.popup__type').textContent = OFFER_TYPE.ru[type];
+  } else {
+    similarAd.querySelector('.popup__type').classList.add('hidden');
+  }
+
+  if (rooms & guests) {
+    similarAd.querySelector('.popup__text--capacity').textContent = rooms + ' комнаты для ' + guests + ' гостей ';
+  } else {
+    similarAd.querySelector('.popup__text--capacity').classList.add('hidden');
+  }
+
+  if (checkin & checkout) {
+    similarAd.querySelector('.popup__text--time').textContent = 'Заезд после ' + checkin + ', выезд до ' + checkout;
+  } else {
+    similarAd.querySelector('.popup__text--time').classList.add('hidden');
+  }
+
+  if (features) {
+    const popupFeatures = similarAd.querySelector('.popup__features');
+    while (popupFeatures.firstChild) {
+      popupFeatures.removeChild(popupFeatures.firstChild);
+    }
+
+    features.forEach(element => {
+      const popupFeature = document.createElement('li');
+      popupFeature.classList.add('popup__feature', 'popup__feature--' + element);
+      popupFeatures.appendChild(popupFeature);
+    });
+  } else {
+    similarAd.querySelector('.popup__features').classList.add('hidden');
+  }
+
+  if (description) {
+    similarAd.querySelector('.popup__description').textContent = description;
+  } else {
+    similarAd.querySelector('.popup__description').classList.add('hidden');
+  }
 
   similarAd.querySelector('.popup__photos').removeChild(similarAd.querySelector('.popup__photo'));
 
-  if (photos) {photos.forEach(photo => {
-    const popupPhoto = document.createElement('img');
-    popupPhoto.classList.add('.popup__photo');
-    popupPhoto.src = photo;
-    popupPhoto.width = 45;
-    popupPhoto.height = 40;
-    similarAd.querySelector('.popup__photos').append(popupPhoto);
-  });} else {
+  if (photos) {
+    photos.forEach(photo => {
+      const popupPhoto = document.createElement('img');
+      popupPhoto.classList.add('.popup__photo');
+      popupPhoto.src = photo;
+      popupPhoto.width = 45;
+      popupPhoto.height = 40;
+      similarAd.querySelector('.popup__photos').append(popupPhoto);
+    });} else {
     similarAd.querySelector('.popup__photos').classList.add('hidden');
   }
 
-  (avatar) ? similarAd.querySelector('.popup__avatar.popup__avatar').src = avatar : similarAd.querySelector('.popup__avatar.popup__avatar').classList.add('hidden');
+  if (avatar) {
+    similarAd.querySelector('.popup__avatar.popup__avatar').src = avatar;
+  } else {
+    similarAd.querySelector('.popup__avatar.popup__avatar').classList.add('hidden');
+  }
 
   return similarListFragment.appendChild(similarAd);
 }

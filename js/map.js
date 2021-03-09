@@ -77,6 +77,10 @@ const pinIcon = L.icon ({
   iconAnchor: ICON_ANCHOR,
 })
 
+getData((ads) => {
+  addIconAdMap(ads);
+})
+
 const addIconAdMap = (ads) => {
   ads.forEach(element => {
     const marker = L.marker ({
@@ -91,9 +95,5 @@ const addIconAdMap = (ads) => {
     marker.addTo(map).bindPopup(createSimilarAd(element));
   });
 }
-
-getData((ads) => {
-  addIconAdMap(ads);
-})
 
 export { addIconAdMap, resetMainMarker }
