@@ -1,5 +1,5 @@
 import { OFFER_TYPE } from './date.js';
-import { resetMainMarker, inputAddress, Main } from './map.js';
+import { resetMainMarker } from './map.js';
 import { sendData } from './server.js';
 import { displaySuccessfulMessage, displayErrorMessage } from './popaps.js';
 

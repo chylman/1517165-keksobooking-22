@@ -100,4 +100,4 @@ const addIconAdMap = (ads) => {
   });
 }
 
-export { addIconAdMap, resetMainMarker, inputAddress, Main }
+export { addIconAdMap, resetMainMarker }
