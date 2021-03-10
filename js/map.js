@@ -2,7 +2,6 @@
 
 import { createSimilarAd } from './similar-element.js';
 import { getData } from './server.js';
-import { displayGetDataErrorMessage } from './popaps.js';
 
 const SCALE = 10;
 
