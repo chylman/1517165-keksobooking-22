@@ -1,5 +1,5 @@
 import { OFFER_TYPE } from './date.js';
-import { resetMainMarker } from './map.js';
+import { resetMainMarker, inputAddress, Main } from './map.js';
 import { sendData } from './server.js';
 import { displaySuccessfulMessage, displayErrorMessage } from './popaps.js';
 
@@ -18,6 +18,8 @@ const selectRooms = adForm.querySelector('#room_number')
 const optionRooms = selectRooms.querySelectorAll('option');
 const selectCapacity = adForm.querySelector('#capacity');
 const optionCapacity = selectCapacity.querySelectorAll('option');
+const buttonReset = adForm.querySelector('.ad-form__reset');
+
 
 const { minPrice } = OFFER_TYPE;
 
@@ -56,10 +58,13 @@ const displayMinMaxSymbolCount = (element) => {
 }
 
 const synchronizeRoomGuest = () => {
+  optionCapacity[optionCapacity.length - 1].disabled = true;
   optionRooms.forEach(room => {
     if (room.selected) {
-      optionCapacity[optionCapacity.length - 1].disabled = true;
       optionCapacity.forEach(capacity => {
+        if (Number(room.value) === Number(capacity.value)) {
+          capacity.selected = true
+        }
         if (Number(capacity.value) > Number(room.value)) {
           capacity.disabled = true;
         } else if (Number(capacity.value) > 0) {
@@ -69,6 +74,9 @@ const synchronizeRoomGuest = () => {
         if (Number(room.value) === ROOM_FOR_NOT_GUEST) {
           if (Number(capacity.value) > 0) {
             capacity.disabled = true;
+          } else {
+            capacity.selected = true;
+            capacity.disabled = false;
           }
         }
       });
@@ -85,7 +93,9 @@ selectRooms.addEventListener('change', () => {
 
 setUserFormSubmit(displaySuccessfulMessage, displayErrorMessage);
 
-adForm.addEventListener('reset', () => {
+buttonReset.addEventListener('click', (evt) => {
+  evt.preventDefault();
+  adForm.reset();
   resetMainMarker();
 });
 

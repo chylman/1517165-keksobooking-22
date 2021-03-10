@@ -14,6 +14,7 @@ const ICON_SIZE = [52, 52];
 const ICON_ANCHOR =  [26, 52];
 const MAIN_ICON_URL = './img/main-pin.svg';
 const ICON_URL = './img/pin.svg';
+const FIXED_NUMBER = 5;
 
 const formElementsForDisabled = Array.from(document.querySelector('.ad-form').childNodes).concat(Array.from(document.querySelector('.map__filters').childNodes));
 
@@ -64,12 +65,15 @@ mainMarker.addTo(map);
 
 mainMarker.on('moveend', (evt) => {
   const coordinates = evt.target.getLatLng();
-  inputAddress.value = coordinates.lat.toFixed(5) + ', ' + coordinates.lng.toFixed(5);
+  inputAddress.value = coordinates.lat.toFixed(FIXED_NUMBER) + ', ' + coordinates.lng.toFixed(FIXED_NUMBER);
 })
 
 const resetMainMarker = () => {
   mainMarker.setLatLng([Main.LAT, Main.LNG]);
+  inputAddress.value = Main.LAT + ', ' + Main.LNG;
 }
+
+resetMainMarker();
 
 const pinIcon = L.icon ({
   iconUrl : ICON_URL,
@@ -96,4 +100,4 @@ const addIconAdMap = (ads) => {
   });
 }
 
-export { addIconAdMap, resetMainMarker }
+export { addIconAdMap, resetMainMarker, inputAddress, Main }
