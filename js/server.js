@@ -1,4 +1,10 @@
 import { displayGetDataErrorMessage } from './popaps.js';
+import { adForm } from './form.js';
+import { resetMainMarker } from './map.js'
+
+const GET_DATA_URL = 'https://22.javascript.pages.academy/keksobooking/data';
+const POST_DATA_URL = 'https://22.javascript.pages.academy/keksobooking';
+
 
 const checkStatus = (response) => {
   if (response.ok) {
@@ -9,7 +15,7 @@ const checkStatus = (response) => {
 }
 
 const getData = (onSuccess) => {
-  fetch('https://22.javascript.pages.academy/keksobooking/data')
+  fetch(GET_DATA_URL)
     .then(checkStatus)
     .then((response) => response.json())
     .then((ads) => {
@@ -21,7 +27,7 @@ const getData = (onSuccess) => {
 
 const sendData = (onSuccess, onFail, body) => {
 
-  fetch('https://22.javascript.pages.academy/keksobooking',
+  fetch(POST_DATA_URL,
     {
       method: 'POST',
       body,
@@ -30,6 +36,8 @@ const sendData = (onSuccess, onFail, body) => {
     .then((response) => {
       if (response.ok) {
         onSuccess();
+        adForm.reset();
+        resetMainMarker();
       } else {
         onFail();
       }

@@ -112,4 +112,7 @@ selectAdType.addEventListener('change', setMinPrice);
 inputAdTitle.addEventListener('input', () => {
   displayMinMaxSymbolCount(inputAdTitle);
   inputAdTitle.reportValidity();
-})
+});
+
+
+export { adForm };
