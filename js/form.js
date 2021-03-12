@@ -1,11 +1,41 @@
 import { OFFER_TYPE } from './date.js';
+import { resetMainMarker } from './map.js';
+import { sendData } from './server.js';
+import { displaySuccessfulMessage, displayErrorMessage } from './popaps.js';
 
-const selectAdType = document.querySelector('#type');
-const inputAdPrice = document.querySelector('#price');
-const selectTimeIn = document.querySelector('#timein');
-const selectTimeOut = document.querySelector('#timeout');
+const MIN_TITLE_LENGTH = 30;
+const MAX_TITLE_LENGTH = 100;
+const ROOM_FOR_NOT_GUEST = 100;
+
+
+const adForm = document.querySelector('.ad-form');
+const selectAdType = adForm.querySelector('#type');
+const inputAdPrice = adForm.querySelector('#price');
+const selectTimeIn = adForm.querySelector('#timein');
+const selectTimeOut = adForm.querySelector('#timeout');
+const inputAdTitle = adForm.querySelector('#title');
+const selectRooms = adForm.querySelector('#room_number')
+const optionRooms = selectRooms.querySelectorAll('option');
+const selectCapacity = adForm.querySelector('#capacity');
+const optionCapacity = selectCapacity.querySelectorAll('option');
+const buttonReset = adForm.querySelector('.ad-form__reset');
+
 
 const { minPrice } = OFFER_TYPE;
+
+const setUserFormSubmit = (onSuccess, onFail) => {
+
+  adForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+
+    sendData(
+      () => onSuccess(),
+      () => onFail(),
+      new FormData(evt.target),
+    );
+
+  })
+}
 
 const setMinPrice = () =>  {
   const minPriceKeys = Object.keys(minPrice);
@@ -17,13 +47,72 @@ const setMinPrice = () =>  {
   });
 };
 
+const displayMinMaxSymbolCount = (element) => {
+  if (element.validity.tooShort) {
+    element.setCustomValidity('Минимальное количество символов ' + MIN_TITLE_LENGTH + '. Осталось ввести ' + (MIN_TITLE_LENGTH - element.textLength));
+  } else if (element.validity.tooLong) {
+    element.setCustomValidity('Максимальное количество символов '+ MAX_TITLE_LENGTH  + '. Удалить лишние ' + (element.textLength - MAX_TITLE_LENGTH));
+  } else if (element.validity.valueMissing) {
+    element.setCustomValidity('Обязательное поле');
+  } else element.setCustomValidity('');
+}
+
+const synchronizeRoomGuest = () => {
+  optionCapacity[optionCapacity.length - 1].disabled = true;
+  optionRooms.forEach(room => {
+    if (room.selected) {
+      optionCapacity.forEach(capacity => {
+        if (Number(room.value) === Number(capacity.value)) {
+          capacity.selected = true
+        }
+        if (Number(capacity.value) > Number(room.value)) {
+          capacity.disabled = true;
+        } else if (Number(capacity.value) > 0) {
+          capacity.disabled = false;
+        }
+
+        if (Number(room.value) === ROOM_FOR_NOT_GUEST) {
+          if (Number(capacity.value) > 0) {
+            capacity.disabled = true;
+          } else {
+            capacity.selected = true;
+            capacity.disabled = false;
+          }
+        }
+      });
+    }
+  });
+}
+
+synchronizeRoomGuest();
+
+
+selectRooms.addEventListener('change', () => {
+  synchronizeRoomGuest();
+});
+
+setUserFormSubmit(displaySuccessfulMessage, displayErrorMessage);
+
+buttonReset.addEventListener('click', (evt) => {
+  evt.preventDefault();
+  adForm.reset();
+  resetMainMarker();
+});
+
 selectTimeIn.addEventListener('change', () => {
   selectTimeOut.value = selectTimeIn.value;
-})
+});
 
 selectTimeOut.addEventListener('change', () => {
   selectTimeIn.value = selectTimeOut.value;
-})
+});
 
 selectAdType.addEventListener('change', setMinPrice);
 
+inputAdTitle.addEventListener('input', () => {
+  displayMinMaxSymbolCount(inputAdTitle);
+  inputAdTitle.reportValidity();
+});
+
+
+export { adForm };

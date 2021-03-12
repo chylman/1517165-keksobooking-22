@@ -1,37 +1,42 @@
 /* global L:readonly */
 
-import { nearbyAds } from './date.js';
 import { createSimilarAd } from './similar-element.js';
+import { getData } from './server.js';
 
-const formAd = document.querySelector('.ad-form');
-const formMapFilters = document.querySelector('.map__filters');
+const SCALE = 10;
+
+const Main = {
+  LAT: 35.64495,
+  LNG: 139.78371,
+};
+
+const ICON_SIZE = [52, 52];
+const ICON_ANCHOR =  [26, 52];
+const MAIN_ICON_URL = './img/main-pin.svg';
+const ICON_URL = './img/pin.svg';
+const FIXED_NUMBER = 5;
+
+const formElementsForDisabled = Array.from(document.querySelector('.ad-form').childNodes).concat(Array.from(document.querySelector('.map__filters').childNodes));
+
 const mapCanvas = document.querySelector('#map-canvas');
 const inputAddress = document.querySelector('#address');
 
 const switchingDisabledForms = () => {
-  formAd.classList.toggle('ad-form--disabled');
-  formMapFilters.classList.toggle('map__filters--disabled');
+  document.querySelector('.ad-form').classList.toggle('ad-form--disabled');
+  document.querySelector('.map__filters').classList.toggle('map__filters--disabled');
 
-  const formAdChilds = formAd.childNodes;
-
-  for (let i = 0; i < formAd.childNodes.length; i++) {
-    formAdChilds[i].disabled = !formAdChilds[i].disabled;
-  }
-
-  const formMapFiltersChilds = formMapFilters.childNodes;
-
-  for (let i = 0; i < formMapFiltersChilds.length; i++) {
-    formMapFilters[i].disabled = !formMapFilters[i].disabled;
-  }
+  formElementsForDisabled.forEach(element => {
+    element.disabled = !element.disabled;
+  });
 }
 
 switchingDisabledForms();
 
 const map = L.map(mapCanvas).on('load', switchingDisabledForms)
   .setView({
-    lat: 35.68495,
-    lng: 139.75371,
-  }, 12);
+    lat: Main.LAT,
+    lng: Main.LNG,
+  }, SCALE);
 
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -41,14 +46,14 @@ L.tileLayer(
 ).addTo(map);
 
 const mainPinIcon = L.icon ({
-  iconUrl : './img/main-pin.svg',
-  iconSize: [52, 52],
-  iconAnchor: [26, 52],
+  iconUrl : MAIN_ICON_URL,
+  iconSize: ICON_SIZE,
+  iconAnchor: ICON_ANCHOR,
 })
 
 const mainMarker = L.marker ({
-  lat: 35.68495,
-  lng: 139.75371,
+  lat: Main.LAT,
+  lng: Main.LNG,
 },
 {
   draggable : true,
@@ -60,26 +65,39 @@ mainMarker.addTo(map);
 
 mainMarker.on('moveend', (evt) => {
   const coordinates = evt.target.getLatLng();
-  inputAddress.value = coordinates.lat.toFixed(5) + ', ' + coordinates.lng.toFixed(5);
+  inputAddress.value = coordinates.lat.toFixed(FIXED_NUMBER) + ', ' + coordinates.lng.toFixed(FIXED_NUMBER);
 })
 
-nearbyAds.forEach(ad => {
-  const pinIcon = L.icon ({
-    iconUrl : './img/pin.svg',
-    iconSize: [52, 52],
-    iconAnchor: [26, 52],
-  })
+const resetMainMarker = () => {
+  mainMarker.setLatLng([Main.LAT, Main.LNG]);
+  inputAddress.value = Main.LAT + ', ' + Main.LNG;
+}
 
-  const marker = L.marker ({
-    lat : ad.location.x,
-    lng: ad.location.y,
-  },
-  {
-    icon: pinIcon,
-  },
-  )
+resetMainMarker();
 
-  marker.addTo(map).bindPopup(createSimilarAd(ad));
-});
+const pinIcon = L.icon ({
+  iconUrl : ICON_URL,
+  iconSize: ICON_SIZE,
+  iconAnchor: ICON_ANCHOR,
+})
 
+getData((ads) => {
+  addIconAdMap(ads);
+})
 
+const addIconAdMap = (ads) => {
+  ads.forEach(element => {
+    const marker = L.marker ({
+      lat : element.location.lat,
+      lng: element.location.lng,
+    },
+    {
+      icon: pinIcon,
+    },
+    )
+
+    marker.addTo(map).bindPopup(createSimilarAd(element));
+  });
+}
+
+export { addIconAdMap, resetMainMarker }
