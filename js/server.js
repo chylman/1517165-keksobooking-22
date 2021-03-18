@@ -5,7 +5,6 @@ import { resetMainMarker } from './map.js'
 const GET_DATA_URL = 'https://22.javascript.pages.academy/keksobooking/data';
 const POST_DATA_URL = 'https://22.javascript.pages.academy/keksobooking';
 
-
 const checkStatus = (response) => {
   if (response.ok) {
     return response;
@@ -33,14 +32,11 @@ const sendData = (onSuccess, onFail, body) => {
       body,
     },
   )
-    .then((response) => {
-      if (response.ok) {
-        onSuccess();
-        adForm.reset();
-        resetMainMarker();
-      } else {
-        onFail();
-      }
+    .then(checkStatus)
+    .then(() => {
+      onSuccess();
+      adForm.reset();
+      resetMainMarker();
     })
     .catch(() => {
       onFail();
