@@ -65,6 +65,7 @@ const synchronizeRoomGuest = () => {
         if (Number(room.value) === Number(capacity.value)) {
           capacity.selected = true
         }
+
         if (Number(capacity.value) > Number(room.value)) {
           capacity.disabled = true;
         } else if (Number(capacity.value) > 0) {
