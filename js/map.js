@@ -1,5 +1,4 @@
 /* global L:readonly */
-/* global _:readonly */
 
 import { createSimilarAd } from './similar-element.js';
 import { getData } from './server.js';
@@ -22,6 +21,17 @@ const adsForm = document.querySelector('.ad-form');
 const mapFilterForm = document.querySelector('.map__filters');
 const mapCanvas = document.querySelector('#map-canvas');
 const inputAddress = document.querySelector('#address');
+
+const debounce = (func, timeout) => {
+  return function (args) {
+    let previousCall = args.lastCall;
+    args.lastCall = Date.now();
+    if (previousCall && ((args.lastCall - previousCall) <= timeout)) {
+      clearTimeout(args.lastCallTimer);
+    }
+    args.lastCallTimer = setTimeout(() => func(args), timeout);
+  }
+}
 
 const switchingDisabledForm = (form) => {
   const disabledClass = form.classList[0] + '--disabled';
@@ -129,7 +139,7 @@ const onSuccessGet = (data) => {
   createIconAdMap(copyData.slice());
   switchingDisabledForm(mapFilterForm);
 
-  mapFilterForm.addEventListener('change', _.throttle(onMapFiltredChange, FILTER_DELAY))
+  mapFilterForm.addEventListener('change', debounce(onMapFiltredChange, FILTER_DELAY))
 }
 
 getData(onSuccessGet);
