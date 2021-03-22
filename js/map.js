@@ -15,12 +15,23 @@ const ICON_ANCHOR =  [26, 52];
 const MAIN_ICON_URL = './img/main-pin.svg';
 const ICON_URL = './img/pin.svg';
 const FIXED_NUMBER = 5;
-const MAX_ADS_FOR_RENDER = 10;
+const FILTER_DELAY = 500;
 
 const adsForm = document.querySelector('.ad-form');
 const mapFilterForm = document.querySelector('.map__filters');
 const mapCanvas = document.querySelector('#map-canvas');
 const inputAddress = document.querySelector('#address');
+
+const debounce = (func, timeout) => {
+  return function (args) {
+    let previousCall = args.lastCall;
+    args.lastCall = Date.now();
+    if (previousCall && ((args.lastCall - previousCall) <= timeout)) {
+      clearTimeout(args.lastCallTimer);
+    }
+    args.lastCallTimer = setTimeout(() => func(args), timeout);
+  }
+}
 
 const switchingDisabledForm = (form) => {
   const disabledClass = form.classList[0] + '--disabled';
@@ -118,17 +129,17 @@ let copyData = [];
 
 const onMapFiltredChange = () => {
   removeIconAdMap();
-  createIconAdMap(filterData(copyData));
+  createIconAdMap(filterData(copyData.slice()));
 
 }
 
 const onSuccessGet = (data) => {
   copyData = data.slice();
 
-  createIconAdMap(copyData.slice(data.slice(0, MAX_ADS_FOR_RENDER)));
+  createIconAdMap(copyData.slice());
   switchingDisabledForm(mapFilterForm);
 
-  mapFilterForm.addEventListener('change', onMapFiltredChange)
+  mapFilterForm.addEventListener('change', debounce(onMapFiltredChange, FILTER_DELAY))
 }
 
 getData(onSuccessGet);
