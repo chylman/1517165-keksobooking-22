@@ -1,6 +1,9 @@
 import { resetMainMarker } from './map.js';
 
-const KEY_CODE_CLOSE = 'Escape';
+const Keys = {
+  ESCAPE: 'Escape',
+  ESC: 'Esc',
+}
 
 const successfulMessageTemplate = document.querySelector('#success').content.querySelector('.success');
 const errorMessageTemplate = document.querySelector('#error').content.querySelector('.error');
@@ -15,10 +18,10 @@ const displaySuccessfulMessage = () => {
   })
 
   document.addEventListener('keydown', (evt) => {
-    if (evt.code === KEY_CODE_CLOSE) {
+    if (evt.key === Keys.ESCAPE ||evt.key === Keys.ESC) {
       successfulMessage.remove();
     }
-  }, {once: true})
+  }, {once: true});
 
   resetMainMarker();
 
@@ -31,13 +34,13 @@ const displayErrorMessage = () => {
 
   errorMessageButton.addEventListener('click', () => {
     errorMessage.remove();
-  }, {once: true})
+  }, {once: true});
 
   document.addEventListener('keydown', (evt) => {
-    if (evt.code === KEY_CODE_CLOSE) {
+    if (evt.key === Keys.ESCAPE ||evt.key === Keys.ESC) {
       errorMessage.remove();
     }
-  }, {once: true})
+  }, {once: true});
 
   return main.appendChild(errorMessage);
 }
@@ -47,13 +50,13 @@ const displayGetDataErrorMessage = () => {
 
   getDataError.addEventListener('click', () => {
     getDataError.remove();
-  })
+  });
 
   document.addEventListener('keydown', (evt) => {
-    if (evt.code === KEY_CODE_CLOSE) {
+    if (evt.key === Keys.ESCAPE ||evt.key === Keys.ESC) {
       getDataError.remove();
     }
-  }, {once: true})
+  }, {once: true});
 
   return main.appendChild(getDataError);
 }

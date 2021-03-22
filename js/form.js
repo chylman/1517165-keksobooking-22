@@ -1,7 +1,8 @@
-import { OFFER_TYPE } from './date.js';
-import { resetMainMarker } from './map.js';
+import { OFFER_TYPE } from './similar-element.js';
+import { resetMainMarker, resetIconAdMap } from './map.js';
 import { sendData } from './server.js';
 import { displaySuccessfulMessage, displayErrorMessage } from './popaps.js';
+import { removePreviewImage } from './image-form.js';
 
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
@@ -19,6 +20,7 @@ const optionRooms = selectRooms.querySelectorAll('option');
 const selectCapacity = adForm.querySelector('#capacity');
 const optionCapacity = selectCapacity.querySelectorAll('option');
 const buttonReset = adForm.querySelector('.ad-form__reset');
+const filterForm = document.querySelector('.map__filters');
 
 
 const { minPrice } = OFFER_TYPE;
@@ -97,7 +99,11 @@ setUserFormSubmit(displaySuccessfulMessage, displayErrorMessage);
 buttonReset.addEventListener('click', (evt) => {
   evt.preventDefault();
   adForm.reset();
+  filterForm.reset();
   resetMainMarker();
+  resetIconAdMap();
+  setMinPrice();
+  removePreviewImage();
 });
 
 selectTimeIn.addEventListener('change', () => {
@@ -116,4 +122,4 @@ inputAdTitle.addEventListener('input', () => {
 });
 
 
-export { adForm };
+export { adForm, setMinPrice, filterForm };

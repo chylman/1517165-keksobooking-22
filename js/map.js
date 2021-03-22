@@ -16,11 +16,12 @@ const MAIN_ICON_URL = './img/main-pin.svg';
 const ICON_URL = './img/pin.svg';
 const FIXED_NUMBER = 5;
 const FILTER_DELAY = 500;
+const DEFAULT_AD_COUNT = 10;
 
 const adsForm = document.querySelector('.ad-form');
 const mapFilterForm = document.querySelector('.map__filters');
 const mapCanvas = document.querySelector('#map-canvas');
-const inputAddress = document.querySelector('#address');
+const inputAddress = adsForm.querySelector('#address');
 
 const debounce = (func, timeout) => {
   return function (args) {
@@ -136,12 +137,17 @@ const onMapFiltredChange = () => {
 const onSuccessGet = (data) => {
   copyData = data.slice();
 
-  createIconAdMap(copyData.slice());
+  createIconAdMap(copyData.slice(0, DEFAULT_AD_COUNT));
   switchingDisabledForm(mapFilterForm);
 
   mapFilterForm.addEventListener('change', debounce(onMapFiltredChange, FILTER_DELAY))
 }
 
+const resetIconAdMap = () => {
+  removeIconAdMap();
+  createIconAdMap(copyData.slice(0, DEFAULT_AD_COUNT));
+}
+
 getData(onSuccessGet);
 
-export { resetMainMarker }
+export { resetMainMarker, resetIconAdMap }
