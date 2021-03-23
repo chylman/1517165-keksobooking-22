@@ -1,11 +1,12 @@
 const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+const DEFAULT_AVATAR_URL ='img/muffin-grey.svg';
 const DefaultImageSize = {
-  WIDTH : 200,
-  HEIGHT : 200,
-}
+  WIDTH : 70,
+  HEIGHT : 70,
+};
 
 const avatarFileChooser = document.querySelector('.ad-form__field input[type=file]');
-const avatarPreview = document.querySelector('.ad-form-header__preview img');
+const avatarPreview = document.querySelector('.ad-form-header__preview');
 const adImageFileChooser = document.querySelector('.ad-form__upload input[type=file]');
 const adImagePreview = document.querySelector('.ad-form__photo');
 
@@ -22,16 +23,15 @@ const showPreviewImage = (fileChooser, previewBlock) => {
       const reader = new FileReader();
 
       reader.addEventListener('load', () => {
-        if (!adImagePreview.children.length === 0) {
-          previewBlock.src = reader.result;
-        } else {
+        if (previewBlock.children.length === 0) {
           const img = document.createElement('img');
           img.src = reader.result;
           img.width = DefaultImageSize.WIDTH;
           img.height = DefaultImageSize.HEIGHT;
           previewBlock.appendChild(img);
+        } else {
+          previewBlock.children[0].src = reader.result;
         }
-
       });
 
       reader.readAsDataURL(file);
@@ -39,5 +39,14 @@ const showPreviewImage = (fileChooser, previewBlock) => {
   })
 }
 
+const removePreviewImage = () => {
+  while (adImagePreview.firstChild) {
+    adImagePreview.removeChild(adImagePreview.firstChild);
+  }
+  avatarPreview.children[0].src = DEFAULT_AVATAR_URL;
+}
+
 showPreviewImage(avatarFileChooser, avatarPreview);
 showPreviewImage(adImageFileChooser, adImagePreview);
+
+export { removePreviewImage }

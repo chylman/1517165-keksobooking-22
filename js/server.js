@@ -1,6 +1,7 @@
 import { displayGetDataErrorMessage } from './popaps.js';
-import { adForm } from './form.js';
-import { resetMainMarker } from './map.js'
+import { adForm, setMinPrice, filterForm } from './form.js';
+import { resetMainMarker, resetIconAdMap } from './map.js';
+import { removePreviewImage } from './image-form.js';
 
 const GET_DATA_URL = 'https://22.javascript.pages.academy/keksobooking/data';
 const POST_DATA_URL = 'https://22.javascript.pages.academy/keksobooking';
@@ -36,7 +37,11 @@ const sendData = (onSuccess, onFail, body) => {
     .then(() => {
       onSuccess();
       adForm.reset();
+      filterForm.reset();
       resetMainMarker();
+      resetIconAdMap();
+      setMinPrice();
+      removePreviewImage();
     })
     .catch(() => {
       onFail();

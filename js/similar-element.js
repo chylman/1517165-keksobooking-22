@@ -1,4 +1,22 @@
-import { OFFER_TYPE } from './date.js';
+const OFFER_TYPE = {
+  ru: {
+    palace: 'Дворец',
+    flat: 'Квартира',
+    house: 'Дом',
+    bungalow: 'Бунгало',
+  },
+  minPrice: {
+    palace: 10000,
+    flat: 1000,
+    house: 5000,
+    bungalow: 0,
+  },
+}
+
+const PhotoSize = {
+  WIDTH: '45',
+  HEIGHT: '40',
+}
 
 const similarAdTemplate = document.querySelector('#card').content.querySelector('.popup');
 const similarListFragment = document.createDocumentFragment();
@@ -72,8 +90,8 @@ const createSimilarAd = (ad) => {
       const popupPhoto = document.createElement('img');
       popupPhoto.classList.add('.popup__photo');
       popupPhoto.src = photo;
-      popupPhoto.width = 45;
-      popupPhoto.height = 40;
+      popupPhoto.width = PhotoSize.WIDTH;
+      popupPhoto.height = PhotoSize.HEIGHT;
       similarAd.querySelector('.popup__photos').append(popupPhoto);
     });} else {
     similarAd.querySelector('.popup__photos').classList.add('hidden');
@@ -88,4 +106,4 @@ const createSimilarAd = (ad) => {
   return similarListFragment.appendChild(similarAd);
 }
 
-export { createSimilarAd }
+export { createSimilarAd, OFFER_TYPE }
