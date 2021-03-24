@@ -34,7 +34,7 @@ const debounce = (func, timeout) => {
   }
 }
 
-const switchingDisabledForm = (form) => {
+const switchDisabledForm = (form) => {
   const disabledClass = form.classList[0] + '--disabled';
   form.classList.toggle(disabledClass);
 
@@ -45,10 +45,10 @@ const switchingDisabledForm = (form) => {
   });
 }
 
-switchingDisabledForm(adsForm);
-switchingDisabledForm(mapFilterForm);
+switchDisabledForm(adsForm);
+switchDisabledForm(mapFilterForm);
 
-const map = L.map(mapCanvas).on('load', () => {switchingDisabledForm(adsForm)})
+const map = L.map(mapCanvas).on('load', () => {switchDisabledForm(adsForm)})
   .setView({
     lat: Main.LAT,
     lng: Main.LNG,
@@ -138,7 +138,7 @@ const onSuccessGet = (data) => {
   copyData = data.slice();
 
   createIconAdMap(copyData.slice(0, DEFAULT_AD_COUNT));
-  switchingDisabledForm(mapFilterForm);
+  switchDisabledForm(mapFilterForm);
 
   mapFilterForm.addEventListener('change', debounce(onMapFiltredChange, FILTER_DELAY))
 }
