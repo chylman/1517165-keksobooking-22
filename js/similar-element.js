@@ -50,13 +50,13 @@ const createSimilarAd = (ad) => {
     similarAd.querySelector('.popup__type').classList.add('hidden');
   }
 
-  if (rooms & guests) {
+  if (rooms && guests) {
     similarAd.querySelector('.popup__text--capacity').textContent = rooms + ' комнаты для ' + guests + ' гостей ';
   } else {
     similarAd.querySelector('.popup__text--capacity').classList.add('hidden');
   }
 
-  if (checkin & checkout) {
+  if (checkin && checkout) {
     similarAd.querySelector('.popup__text--time').textContent = 'Заезд после ' + checkin + ', выезд до ' + checkout;
   } else {
     similarAd.querySelector('.popup__text--time').classList.add('hidden');

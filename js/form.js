@@ -27,7 +27,7 @@ const { minPrice } = OFFER_TYPE;
 
 const setUserFormSubmit = (onSuccess, onFail) => {
 
-  adForm.addEventListener('submit', (evt) => {
+  const onAdFormSubmit = (evt) => {
     evt.preventDefault();
 
     sendData(
@@ -36,10 +36,12 @@ const setUserFormSubmit = (onSuccess, onFail) => {
       new FormData(evt.target),
     );
 
-  })
+  }
+
+  adForm.addEventListener('submit', onAdFormSubmit);
 }
 
-const setMinPrice = () =>  {
+const onSelectAdTypeChange = () =>  {
   const minPriceKeys = Object.keys(minPrice);
   minPriceKeys.forEach(element => {
     if (element === selectAdType.value) {
@@ -56,7 +58,9 @@ const displayMinMaxSymbolCount = (element) => {
     element.setCustomValidity('Максимальное количество символов '+ MAX_TITLE_LENGTH  + '. Удалить лишние ' + (element.textLength - MAX_TITLE_LENGTH));
   } else if (element.validity.valueMissing) {
     element.setCustomValidity('Обязательное поле');
-  } else element.setCustomValidity('');
+  } else {
+    element.setCustomValidity('')
+  }
 }
 
 const synchronizeRoomGuest = () => {
@@ -89,37 +93,46 @@ const synchronizeRoomGuest = () => {
 
 synchronizeRoomGuest();
 
+const onSelectTimeInChange = () => {
+  selectTimeOut.value = selectTimeIn.value;
+};
 
-selectRooms.addEventListener('change', () => {
-  synchronizeRoomGuest();
-});
+const onSelectTimeOutChange = () => {
+  selectTimeIn.value = selectTimeOut.value;
+};
 
-setUserFormSubmit(displaySuccessfulMessage, displayErrorMessage);
+const onInputAdTitleInput = () => {
+  displayMinMaxSymbolCount(inputAdTitle);
+  inputAdTitle.reportValidity();
+}
 
-buttonReset.addEventListener('click', (evt) => {
+const onButtonResetClick = (evt) => {
   evt.preventDefault();
   adForm.reset();
   filterForm.reset();
   resetMainMarker();
   resetIconAdMap();
-  setMinPrice();
+  onSelectAdTypeChange();
   removePreviewImage();
-});
+}
 
-selectTimeIn.addEventListener('change', () => {
-  selectTimeOut.value = selectTimeIn.value;
-});
+const onSelectRoomsValueChange = () => {
+  synchronizeRoomGuest();
+}
 
-selectTimeOut.addEventListener('change', () => {
-  selectTimeIn.value = selectTimeOut.value;
-});
+selectRooms.addEventListener('change', onSelectRoomsValueChange);
 
-selectAdType.addEventListener('change', setMinPrice);
+setUserFormSubmit(displaySuccessfulMessage, displayErrorMessage);
 
-inputAdTitle.addEventListener('input', () => {
-  displayMinMaxSymbolCount(inputAdTitle);
-  inputAdTitle.reportValidity();
-});
+buttonReset.addEventListener('click', onButtonResetClick);
+
+selectTimeIn.addEventListener('change', onSelectTimeInChange);
+
+selectTimeOut.addEventListener('change', onSelectTimeOutChange);
+
+selectAdType.addEventListener('change', onSelectAdTypeChange);
+
+inputAdTitle.addEventListener('input', onInputAdTitleInput);
 
 
-export { adForm, setMinPrice, filterForm };
+export { adForm, onSelectAdTypeChange, filterForm };

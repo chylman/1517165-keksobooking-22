@@ -1,5 +1,5 @@
 import { displayGetDataErrorMessage } from './popaps.js';
-import { adForm, setMinPrice, filterForm } from './form.js';
+import { adForm, onSelectAdTypeChange, filterForm } from './form.js';
 import { resetMainMarker, resetIconAdMap } from './map.js';
 import { removePreviewImage } from './image-form.js';
 
@@ -40,7 +40,7 @@ const sendData = (onSuccess, onFail, body) => {
       filterForm.reset();
       resetMainMarker();
       resetIconAdMap();
-      setMinPrice();
+      onSelectAdTypeChange();
       removePreviewImage();
     })
     .catch(() => {

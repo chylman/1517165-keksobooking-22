@@ -10,18 +10,24 @@ const errorMessageTemplate = document.querySelector('#error').content.querySelec
 const getDataErrorTemplate = document.querySelector('#error-get-data').content.querySelector('.error');
 const main = document.querySelector('main');
 
+
+
 const displaySuccessfulMessage = () => {
   const successfulMessage = successfulMessageTemplate.cloneNode(true);
 
-  successfulMessage.addEventListener('click', () => {
+  const onSuccessfulMessageCloseClick = () => {
     successfulMessage.remove();
-  })
+  };
 
-  document.addEventListener('keydown', (evt) => {
+  const onDocumentSuccessfullCloseKeydown = (evt) => {
     if (evt.key === Keys.ESCAPE ||evt.key === Keys.ESC) {
       successfulMessage.remove();
     }
-  }, {once: true});
+  };
+
+  successfulMessage.addEventListener('click', onSuccessfulMessageCloseClick);
+
+  document.addEventListener('keydown', onDocumentSuccessfullCloseKeydown, {once: true});
 
   resetMainMarker();
 
@@ -32,15 +38,19 @@ const displayErrorMessage = () => {
   const errorMessage = errorMessageTemplate.cloneNode(true);
   const errorMessageButton = errorMessage.querySelector('.error__button');
 
-  errorMessageButton.addEventListener('click', () => {
+  const onErrorMessageButtonClick = () => {
     errorMessage.remove();
-  }, {once: true});
+  };
 
-  document.addEventListener('keydown', (evt) => {
+  const onDocumentErrorCloseKeydown = (evt) => {
     if (evt.key === Keys.ESCAPE ||evt.key === Keys.ESC) {
       errorMessage.remove();
     }
-  }, {once: true});
+  };
+
+  errorMessageButton.addEventListener('click', onErrorMessageButtonClick, {once: true});
+
+  document.addEventListener('keydown', onDocumentErrorCloseKeydown, {once: true});
 
   return main.appendChild(errorMessage);
 }
@@ -48,15 +58,19 @@ const displayErrorMessage = () => {
 const displayGetDataErrorMessage = () => {
   const getDataError = getDataErrorTemplate.cloneNode(true);
 
-  getDataError.addEventListener('click', () => {
+  const onGetDataErrorCloseClick = () => {
     getDataError.remove();
-  });
+  }
 
-  document.addEventListener('keydown', (evt) => {
+  const onDocumentGetDataErrorCloseKeydown = (evt) => {
     if (evt.key === Keys.ESCAPE ||evt.key === Keys.ESC) {
       getDataError.remove();
     }
-  }, {once: true});
+  }
+
+  getDataError.addEventListener('click', onGetDataErrorCloseClick);
+
+  document.addEventListener('keydown', onDocumentGetDataErrorCloseKeydown, {once: true});
 
   return main.appendChild(getDataError);
 }
