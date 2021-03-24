@@ -11,7 +11,7 @@ const adImageFileChooser = document.querySelector('.ad-form__upload input[type=f
 const adImagePreview = document.querySelector('.ad-form__photo');
 
 const showPreviewImage = (fileChooser, previewBlock) => {
-  fileChooser.addEventListener('change', () => {
+  const onInputFileChooseChange = () => {
     const file = fileChooser.files[0];
     const fileName = file.name.toLowerCase();
 
@@ -22,7 +22,7 @@ const showPreviewImage = (fileChooser, previewBlock) => {
     if (matches) {
       const reader = new FileReader();
 
-      reader.addEventListener('load', () => {
+      const onFileReaderLoad = () => {
         if (previewBlock.children.length === 0) {
           const img = document.createElement('img');
           img.src = reader.result;
@@ -32,11 +32,15 @@ const showPreviewImage = (fileChooser, previewBlock) => {
         } else {
           previewBlock.children[0].src = reader.result;
         }
-      });
+      }
+
+      reader.addEventListener('load', onFileReaderLoad);
 
       reader.readAsDataURL(file);
     }
-  })
+  }
+
+  fileChooser.addEventListener('change', onInputFileChooseChange);
 }
 
 const removePreviewImage = () => {
