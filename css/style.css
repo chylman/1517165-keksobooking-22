@@ -645,7 +645,6 @@ fieldset {
 
 .footer {
   margin-top: 30px;
-  padding-top: 30px;
   border-top: solid 1px #cccccc;
 
   display: -webkit-box;
@@ -656,7 +655,7 @@ fieldset {
           align-items: flex-start;
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
-          justify-content: space-between;
+          justify-content: center;
 }
 
 .copyright {
